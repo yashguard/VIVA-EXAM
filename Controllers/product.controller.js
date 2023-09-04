@@ -7,9 +7,40 @@ const index = (req, res) => {
     res.render("index", { name: req.user.username });
   }
 };
+
+const productdata = (req, res) => {
+  res.json({ products: blankArray });
+};
+
+// db
+const productdatadb = async (req, res) => {
+  let User = await user.findOne({ username: req.user.username });
+  if (User) {
+    res.json({ products: User.products });
+  }
+};
+
+const addproductdb = async (req, res) => {
+  let User = await user.findOne({ username: req.user.username });
+  if (User) {
+    User.products.push(req.body);
+    await User.save();
+  }
+};
+
+const deleteproductdb = async (req, res) => {
+  let User = await user.findOne({ username: req.user.username });
+  User.products = req.user.products.filter(
+    (product) => product._id !== req.params.id
+  );
+  await User.save();
+  console.log(User.products);
+};
+
 const productDetails = (req, res) => {
   res.render("products");
 };
+
 const showProducts = async (req, res) => {
   if (req.user) {
     let products = await product.create({
@@ -17,11 +48,18 @@ const showProducts = async (req, res) => {
       user: req.user.username,
     });
     blankArray.push(products);
-    let User = await user.findOne({ username: req.user.username });
+    let User = req.user;
     User.products = blankArray;
-    await User.save();
     res.status(201).json({ success: true, User });
   }
 };
 
-module.exports = { index, productDetails, showProducts };
+module.exports = {
+  index,
+  productDetails,
+  showProducts,
+  productdata,
+  productdatadb,
+  addproductdb,
+  deleteproductdb,
+};

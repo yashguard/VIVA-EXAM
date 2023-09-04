@@ -44,5 +44,46 @@
         </form>
       </div>
     </center>
+
+    <div id="products"></div>
+
+    <script>
+      fetch("/productdata")
+        .then((response) => response.json())
+        .then((response) => getData(response.products));
+
+      const addProductDb = (productDetails) => {
+        fetch("/addproductdb", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(productDetails),
+        });
+      };
+
+      const getData = (products) => {
+        products.map((ele) => {
+          let productCategory = document.createElement("h1");
+          productCategory.innerHTML = `Category : ${ele.productCategory}`;
+          let productImage = document.createElement("img");
+          productImage.src = ele.productImage;
+          let productName = document.createElement("p");
+          productName.innerHTML = ele.productName;
+          let productPrice = document.createElement("span");
+          productPrice.innerHTML = `$${ele.productPrice}`;
+          let add = document.createElement("button");
+          add.innerHTML = "add";
+          add.addEventListener("click", () => addProductDb(ele));
+          let div = document.createElement("div");
+          div.append(
+            productCategory,
+            productImage,
+            productName,
+            productPrice,
+            add,
+          );
+          document.getElementById("products").append(div);
+        });
+      };
+    </script>
   </body>
 </html>

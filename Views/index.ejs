@@ -13,9 +13,50 @@
     </nav>
     <br /><br /><br /><br /><br />
     <h1>Welcome <%=name%> to home page</h1>
+    <div id="products"></div>
 
     <script>
-      fetch("/product")
+      const display = () => {
+        fetch("/productdatadb")
+          .then((response) => response.json())
+          .then((response) => getData(response.products));
+      };
+      const deleteProduct = (id) => {
+        fetch(`/deleteproductdb/${id}`, {
+          method: "DELETE",
+        }).then(() => display());
+        window.location.reload();
+      };
+
+      const getData = (products) => {
+        products.map((ele) => {
+          let productCategory = document.createElement("h1");
+          productCategory.innerHTML = `Category : ${ele.productCategory}`;
+          let productImage = document.createElement("img");
+          productImage.src = ele.productImage;
+          let productName = document.createElement("p");
+          productName.innerHTML = ele.productName;
+          let productPrice = document.createElement("span");
+          productPrice.innerHTML = `$${ele.productPrice}`;
+          let remove = document.createElement("button");
+          remove.innerHTML = "delete";
+          remove.addEventListener("click", () => deleteProduct(ele._id));
+          let update = document.createElement("button");
+          update.innerHTML = "update";
+          let div = document.createElement("div");
+          div.append(
+            productCategory,
+            productImage,
+            productName,
+            productPrice,
+            remove,
+            update
+          );
+          document.getElementById("products").append(div);
+        });
+      };
+
+      display();
     </script>
   </body>
 </html>

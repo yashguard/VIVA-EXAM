@@ -38,3 +38,69 @@ nav {
 a {
   text-decoration: none;
 }
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+#products {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+#products>div {
+  width: 30%;
+  border: 1px solid black;
+  margin: 30px;
+  text-transform: capitalize;
+  transition: all 0.5s;
+  text-align: center;
+}
+
+#products>div:hover {
+  box-shadow: 0px 0px 15px black;
+  transform: scale(103%);
+}
+
+#products img {
+  width: 50%;
+  display: block;
+  margin: 0 auto;
+}
+
+#products p {
+  font-size: 20px;
+  text-align: center;
+  display: block;
+  margin: 20px 0;
+}
+
+#products span {
+  font-size: 25px;
+  display: block;
+  text-align: center;
+  color: red;
+}
+
+#products button {
+  margin: 20px;
+  padding: 13px 30px;
+  background-color: black;
+  color: white;
+  border: 1px solid black;
+  cursor: pointer;
+  font-size: 18px;
+  text-transform: capitalize;
+  transition: all 0.5s;
+}
+
+
+#products button:hover {
+  background-color: white;
+  color: black;
+}
