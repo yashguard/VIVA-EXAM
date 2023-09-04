@@ -4,7 +4,7 @@ let blankArray = [];
 
 const index = (req, res) => {
   if (req.user) {
-    res.render("index", {name : req.user.username});
+    res.render("index", { name: req.user.username });
   }
 };
 const productDetails = (req, res) => {
@@ -17,8 +17,9 @@ const showProducts = async (req, res) => {
       user: req.user.username,
     });
     blankArray.push(products);
-    let User = req.user;
+    let User = await user.findOne({ username: req.user.username });
     User.products = blankArray;
+    await User.save();
     res.status(201).json({ success: true, User });
   }
 };
