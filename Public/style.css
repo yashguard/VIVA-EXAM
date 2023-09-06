@@ -46,6 +46,29 @@ a {
   justify-content: center;
 }
 
+#inputs {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  width: 1500px;
+}
+
+#inputs input {
+  padding: 5px 50px;
+}
+
+#inputs input[type="submit"] {
+  width: auto;
+  background-color: black;
+  color: white;
+  border: 1px solid black;
+  cursor: pointer;
+  font-size: 18px;
+  text-transform: capitalize;
+  transition: all 0.5s;
+}
+
+
 #products {
   display: flex;
   flex-wrap: wrap;

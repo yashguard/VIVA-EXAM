@@ -34,7 +34,21 @@ const deleteproductdb = async (req, res) => {
     (product) => product._id !== req.params.id
   );
   await User.save();
-  console.log(User.products);
+};
+
+const updateproductdb = async (req, res) => {
+  let User = await user.findOne({ username: req.user.username });
+  if (User) {
+    User.products = req.user.products.filter(async (ele) => {
+      if (ele._id === req.params.id) {
+        ele.productName = req.body.productName;
+        ele.productPrice = req.body.productPrice;
+        ele.productCategory = req.body.productCategory;
+        ele.productImage = req.body.productImage;
+      }
+    });
+  }
+  await User.save();
 };
 
 const productDetails = (req, res) => {
@@ -62,4 +76,5 @@ module.exports = {
   productdatadb,
   addproductdb,
   deleteproductdb,
+  updateproductdb,
 };

@@ -13,17 +13,53 @@
     </nav>
     <br /><br /><br /><br /><br />
     <h1>Welcome <%=name%> to home page</h1>
+    <div id="inputs">
+      <input type="text" id="productName" />
+      <input type="number" id="productPrice" />
+      <input type="text" id="productCategory" />
+      <input type="url" id="productImage" />
+      <input type="submit" value="Update" id="submit" />
+    </div>
     <div id="products"></div>
 
     <script>
+      let id;
       const display = () => {
         fetch("/productdatadb")
           .then((response) => response.json())
           .then((response) => getData(response.products));
       };
+
       const deleteProduct = (id) => {
         fetch(`/deleteproductdb/${id}`, {
           method: "DELETE",
+        }).then(() => display());
+        window.location.reload();
+      };
+
+      const updateProduct = (ele) => {
+        let productName = document.getElementById("productName");
+        let productPrice = document.getElementById("productPrice");
+        let productCategory = document.getElementById("productCategory");
+        let productImage = document.getElementById("productImage");
+        productCategory.value = ele.productCategory;
+        productImage.value = ele.productImage;
+        productName.value = ele.productName;
+        productPrice.value = ele.productPrice;
+        id = ele._id;
+      };
+
+      const setUpdateDb = (id) => {
+        let productDetails = {
+          productName: document.getElementById("productName").value,
+          productPrice: document.getElementById("productPrice").value,
+          productCategory: document.getElementById("productCategory").value,
+          productImage: document.getElementById("productImage").value,
+        };
+        fetch(`/updateproductdb/${id}`, {
+          method: "PATCH",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(productDetails),
         }).then(() => display());
         window.location.reload();
       };
@@ -43,6 +79,7 @@
           remove.addEventListener("click", () => deleteProduct(ele._id));
           let update = document.createElement("button");
           update.innerHTML = "update";
+          update.addEventListener("click", () => updateProduct(ele));
           let div = document.createElement("div");
           div.append(
             productCategory,
@@ -54,6 +91,9 @@
           );
           document.getElementById("products").append(div);
         });
+
+        let submit = document.getElementById("submit");
+        submit.addEventListener("click", () => setUpdateDb(id));
       };
 
       display();
