@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <center>
+      <div class="signup-container">
+        <h2>Email Verify</h2>
+        <form id="submit">
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            name="email"
+            id="email"
+          /><br /><br /><br />
+          <input type="submit" value="Click" />
+        </form>
+      </div>
+    </center>
+    <script>
+      document.getElementById("submit").addEventListener("submit", (e) => {
+        e.preventDefault();
+        let message = {
+          email: document.getElementById("email").value,
+        };
+        fetch("/user/email", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(message),
+        })
+          .then((res) => {
+            if (res.status === 200) {
+              alert("Otp sent to your email successfully");
+              window.location.href = "/user/otp";
+            } else if (res.status === 404)
+              alert("User with given email does not exist");
+          })
+          .catch((err) => console.log(err.message));
+      });
+    </script>
+  </body>
+</html>
